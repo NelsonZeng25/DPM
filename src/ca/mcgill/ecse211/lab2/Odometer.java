@@ -38,7 +38,7 @@ public class Odometer implements Runnable {
   /**
    * The (x, y, theta) position as an array
    */
-  private double[] position;
+  //private double[] position;
 
   // Thread control tools
   /**
