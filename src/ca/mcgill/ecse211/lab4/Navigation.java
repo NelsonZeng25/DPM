@@ -6,8 +6,9 @@ public class Navigation {
   
   /**
    * This method moves the robot to a certain location given by x and y which are tile points with origin in
-   * the bottom left corner. It turns the robot to its destination and goes foward. It will stop whenever the 
-   * US distance detected is lower than a threshold.
+   * the bottom left corner. It turns the robot to its destination and goes foward. 
+   * 
+   * *EDIT* Removed avoid method for this lab
    * 
    * @param x
    * @param y
