@@ -105,7 +105,7 @@ public class Odometer implements Runnable {
       distR = Math.PI * WHEEL_RAD * (rightMotorTachoCount - rightMotorLastTachoCount) / 180;
       leftMotorLastTachoCount = leftMotorTachoCount; // Save tacho counts for next iteration
       rightMotorLastTachoCount = rightMotorTachoCount;
-      deltaD = (distL + distR);             // Compute vehicle displacement
+      deltaD = (distL + distR) / 2;             // Compute vehicle displacement
       deltaT = (distL - distR) / TRACK;     // Compute change in heading
       tempTheta += deltaT;                  // Update heading
       dX = deltaD * Math.sin(tempTheta);    // Compute X component of displacement

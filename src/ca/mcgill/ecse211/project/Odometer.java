@@ -87,32 +87,29 @@ public class Odometer implements Runnable {
    */
   public void run() {
     long updateStart, updateEnd;
-    double distL, distR, deltaD, deltaT, dX, dY, tempTheta;
-    tempTheta = odo.getXYT()[2] * Math.PI / 180;            // Initialize theta variable to radians
-    leftMotor.resetTachoCount();                            // Initialize tacho counts to zero
-    rightMotor.resetTachoCount();
-    leftMotorLastTachoCount = leftMotor.getTachoCount();
-    rightMotorLastTachoCount = rightMotor.getTachoCount();
+    double distL, distR, deltaD, deltaT, dX, dY;
 
     while (true) {
       updateStart = System.currentTimeMillis();
-
+      
+      leftMotorLastTachoCount = leftMotorTachoCount;
+      rightMotorLastTachoCount = rightMotorTachoCount;
+      
       leftMotorTachoCount = leftMotor.getTachoCount();
       rightMotorTachoCount = rightMotor.getTachoCount();
 
       // Compute wheel displacements
       distL = Math.PI * WHEEL_RAD * (leftMotorTachoCount - leftMotorLastTachoCount) / 180;
       distR = Math.PI * WHEEL_RAD * (rightMotorTachoCount - rightMotorLastTachoCount) / 180;
-      leftMotorLastTachoCount = leftMotorTachoCount; // Save tacho counts for next iteration
-      rightMotorLastTachoCount = rightMotorTachoCount;
-      deltaD = (distL + distR);             // Compute vehicle displacement
-      deltaT = (distL - distR) / TRACK;     // Compute change in heading
-      tempTheta += deltaT;                  // Update heading
-      dX = deltaD * Math.sin(tempTheta);    // Compute X component of displacement
-      dY = deltaD * Math.cos(tempTheta);    // Compute Y component of displacement
+
+      deltaD = (distL + distR) / 2;         // Compute vehicle displacement
+      deltaT = ((distL - distR) / TRACK) * (180 / Math.PI);     // Compute change in heading
+
+      dX = deltaD * Math.sin(theta * (Math.PI / 180));    // Compute X component of displacement
+      dY = deltaD * Math.cos(theta * (Math.PI / 180));    // Compute Y component of displacement
 
       // Update position and convert deltaT back to degrees
-      odo.update(dX, dY, deltaT * 180 / Math.PI);
+      odo.update(dX, dY, deltaT);
 
       // This ensures that the odometer only runs once every period
       updateEnd = System.currentTimeMillis();
